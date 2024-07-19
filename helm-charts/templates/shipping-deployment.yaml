@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+  labels:
+    name: shipping
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.shipping.replicaCount }}
+  selector:
+    matchLabels:
+      name: shipping
+  template:
+    metadata:
+      labels:
+        name: shipping
+      {{- if .Values.istio.enabled }}
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+      {{- end }}
+    spec:
+      containers:
+        - name: shipping
+          image: {{ .Values.shipping.image.name }}:{{ .Values.shipping.image.tag }}
+          command:
+            - /usr/local/bin/java.sh
+            - -jar
+            - ./app.jar
+            - --port={{ .Values.shipping.containerPort }}
+          env:
+            - name: {{ .Values.java.options.name }}
+              value: {{ .Values.java.options.value }}
+          resources:
+{{ toYaml .Values.shipping.resources | indent 10 }}
+          ports:
+            - containerPort: {{ .Values.shipping.containerPort }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+{{- if lt (int .Values.shipping.containerPort) 1024 }}
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+{{- end }}
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.shipping.containerPort }}
+            initialDelaySeconds: 420
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.shipping.containerPort }}
+            initialDelaySeconds: 360
+            periodSeconds: 3
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+

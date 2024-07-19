@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue-db
+  labels:
+    name: catalogue-db
+  namespace: {{ .Values.namespace}}
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: {{ .Values.catalogue.db.containerPort }}
+      targetPort: {{ .Values.catalogue.db.containerPort }}
+  selector:
+    name: catalogue-db

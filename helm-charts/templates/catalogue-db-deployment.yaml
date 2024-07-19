@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue-db
+  labels:
+    name: catalogue-db
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{  .Values.catalogue.db.replicaCount }}
+  selector:
+    matchLabels:
+      name: catalogue-db
+  template:
+    metadata:
+      labels:
+        name: catalogue-db
+    spec:
+      containers:
+        - name: catalogue-db
+          image: {{ .Values.catalogue.db.image.name }}:{{ .Values.catalogue.db.image.tag }}
+          env:
+            - name: MYSQL_DATABASE
+              value: {{  .Values.catalogue.db.env.MYSQL_DATABASE }}
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{  .Values.catalogue.db.env.MYSQL_ROOT_PASSWORD }}
+          ports:
+            - name: mysql
+              containerPort: {{  .Values.catalogue.db.containerPort }}
+{{/*      nodeSelector:*/}}
+{{/*        beta.kubernetes.io/os: linux*/}}

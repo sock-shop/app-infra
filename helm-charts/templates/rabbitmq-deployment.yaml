@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  labels:
+    name: rabbitmq
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.rabbitmq.replicaCount }}
+  selector:
+    matchLabels:
+      name: rabbitmq
+  template:
+    metadata:
+      labels:
+        name: rabbitmq
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+        - name: rabbitmq
+          image: {{ .Values.rabbitmq.images.rabbitmq.name }}:{{ .Values.rabbitmq.images.rabbitmq.tag }}
+          ports:
+            - containerPort: {{ index .Values.rabbitmq.images.rabbitmq.ports 0 "containerPort" }}
+              name: management
+            - containerPort: {{ index .Values.rabbitmq.images.rabbitmq.ports 1 "containerPort" }}
+              name: rabbitmq
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+                - DAC_OVERRIDE
+            readOnlyRootFilesystem: true
+        - name: rabbitmq-exporter
+          image: {{ .Values.rabbitmq.images.rabbitmq_exporter.name }}
+          ports:
+            - containerPort: {{ .Values.rabbitmq.images.rabbitmq_exporter.containerPort }}
+              name: exporter
+{{/*      nodeSelector:*/}}
+{{/*        beta.kubernetes.io/os: linux*/}}
