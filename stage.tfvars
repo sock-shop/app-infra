@@ -1,2 +1,2 @@
-values_path          = "helm-charts/values-stage.yaml"
-deployment_namespace = "sock-shop-stage"
+values_path          = "sock-shop/values-stage.yaml"
+deployment_namespace = "stage"

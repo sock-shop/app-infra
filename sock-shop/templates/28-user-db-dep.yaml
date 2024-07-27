@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.userDb.name }}
+  labels:
+    name: {{ .Values.userDb.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.userDb.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.userDb.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.userDb.name }}
+    spec:
+      containers:
+        - name: {{ .Values.userDb.name }}
+          image: "{{ .Values.userDb.image.repository }}:{{ .Values.userDb.image.tag }}"
+          ports:
+            - name: mongo
+              containerPort: {{ .Values.userDb.service.targetPort }}
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

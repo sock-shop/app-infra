@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.sessionDb.name }}
+  labels:
+    name: {{ .Values.sessionDb.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.sessionDb.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.sessionDb.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.sessionDb.name }}
+      annotations:
+        prometheus.io.scrape: "false"
+    spec:
+      containers:
+        - name: {{ .Values.sessionDb.name }}
+          image: "{{ .Values.sessionDb.image.repository }}:{{ .Values.sessionDb.image.tag }}"
+          ports:
+            - name: redis
+              containerPort: {{ .Values.sessionDb.service.targetPort }}
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+            readOnlyRootFilesystem: true
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

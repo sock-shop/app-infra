@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.user.name }}
+  labels:
+    name: {{ .Values.user.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.user.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.user.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.user.name }}
+    spec:
+      containers:
+        - name: {{ .Values.user.name }}
+          image: "{{ .Values.user.image.repository }}:{{ .Values.user.image.tag }}"
+          resources:
+          {{- toYaml .Values.user.resources | nindent 10 }}
+          ports:
+            - containerPort: {{ .Values.user.service.targetPort }}
+          env:
+            - name: mongo
+              value: {{ .Values.user.env.mongo }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.user.probe.path }}
+              port: {{ .Values.user.service.targetPort }}
+            initialDelaySeconds: {{ .Values.user.probe.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.user.probe.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.user.probe.path }}
+              port: {{ .Values.user.service.targetPort }}
+            initialDelaySeconds: {{ .Values.user.probe.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.user.probe.readiness.periodSeconds }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.catalogue.name }}
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: {{ .Values.catalogue.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - port: {{ .Values.catalogue.service.port }}
+      targetPort: {{ .Values.catalogue.service.targetPort }}
+  selector:
+    name: {{ .Values.catalogue.name }}
