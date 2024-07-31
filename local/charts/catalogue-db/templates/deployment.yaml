@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.catalogueDb.name }}
+  labels:
+    name: {{ .Values.catalogueDb.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.catalogueDb.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.catalogueDb.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.catalogueDb.name }}
+    spec:
+      containers:
+        - name: {{ .Values.catalogueDb.name }}
+          image: "{{ .Values.catalogueDb.image.repository }}:{{ .Values.catalogueDb.image.tag }}"
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.catalogueDb.env.mysqlRootPassword }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.catalogueDb.env.mysqlDatabase }}
+          ports:
+            - name: mysql
+              containerPort: {{ .Values.catalogueDb.service.targetPort }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

@@ -1,0 +1,12 @@
+cartsDb:
+  name: carts-db
+  replicaCount: 1
+  image:
+    repository: mongo
+    tag: "3.4"
+  service:
+    port: 27017
+    targetPort: 27017
+
+nodeSelector:
+  kubernetes.io/os: linux

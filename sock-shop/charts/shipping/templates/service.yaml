@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.shipping.name }}
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: {{ .Values.shipping.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - port: {{ .Values.shipping.service.port }}
+      targetPort: {{ .Values.shipping.service.targetPort }}
+  selector:
+    name: {{ .Values.shipping.name }}

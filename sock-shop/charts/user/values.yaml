@@ -1,0 +1,31 @@
+user:
+  name: user
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/user
+    tag: 0.4.7
+  resources:
+    limits:
+      cpu: 300m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  service:
+    port: 80
+    targetPort: 80
+  env:
+    mongo: user-db:27017
+  probe:
+    path: /health
+    liveness:
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      initialDelaySeconds: 180
+      periodSeconds: 3
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+

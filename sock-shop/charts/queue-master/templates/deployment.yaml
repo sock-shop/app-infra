@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.queueMaster.name }}
+  labels:
+    name: {{ .Values.queueMaster.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.queueMaster.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.queueMaster.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.queueMaster.name }}
+    spec:
+      containers:
+        - name: {{ .Values.queueMaster.name }}
+          image: "{{ .Values.queueMaster.image.repository }}:{{ .Values.queueMaster.image.tag }}"
+          env:
+            - name: JAVA_OPTS
+              value: {{ .Values.queueMaster.env.javaOpts }}
+          resources:
+            {{- toYaml .Values.queueMaster.resources | nindent 10 }}
+          ports:
+            - containerPort: {{ .Values.queueMaster.service.targetPort }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.payment.name }}
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: {{ .Values.payment.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - port: {{ .Values.payment.service.port }}
+      targetPort: {{ .Values.payment.service.targetPort }}
+  selector:
+    name: {{ .Values.payment.name }}

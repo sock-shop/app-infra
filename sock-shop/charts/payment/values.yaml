@@ -1,0 +1,30 @@
+payment:
+  name: payment
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/payment
+    tag: 0.4.3
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 99m
+      memory: 100Mi
+  service:
+    port: 80
+    targetPort: 80
+  probe:
+    path: /health
+    liveness:
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      initialDelaySeconds: 180
+      periodSeconds: 3
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+
+

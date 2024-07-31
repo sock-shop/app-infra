@@ -1,0 +1,21 @@
+carts:
+  name: carts
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/carts
+    tag: 0.4.8
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+  env:
+    javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
+  service:
+    port: 80
+    targetPort: 80
+
+nodeSelector:
+  kubernetes.io/os: linux

@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.frontEnd.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.frontEnd.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.frontEnd.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.frontEnd.name }}
+    spec:
+      initContainers:
+        - name: wait-for-carts
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for carts service to be ready..."
+              until nc -z -v -w30 {{ .Values.carts.name }} 80; do
+                echo "carts service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "carts service is available!"
+        - name: wait-for-catalogue
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for catalogue service to be ready..."
+              until nc -z -v -w30 {{ .Values.catalogue.name }} 80; do
+                echo "catalogue service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "catalogue service is available!"
+        - name: wait-for-orders
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for orders service to be ready..."
+              until nc -z -v -w30 {{ .Values.orders.name }} 80; do
+                echo "orders service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "orders service is available!"
+        - name: wait-for-payment
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for payment service  to be ready..."
+              until nc -z -v -w30 {{ .Values.payment.name }} 80; do
+                echo "payment service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "payment service  is available!"
+        - name: wait-for-shipping
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for shipping service to be ready..."
+              until nc -z -v -w30 {{ .Values.shipping.name }} 80; do
+                echo "shipping service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "shipping service is available!"
+        - name: wait-for-user
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for user service to be ready..."
+              until nc -z -v -w30 {{ .Values.user.name }} 80; do
+                echo "user service not available yet, sleeping..."
+                sleep 10
+              done
+              echo "user service is available!"
+      containers:
+        - name: {{ .Values.frontEnd.name }}
+          image: "{{ .Values.frontEnd.image.repository }}:{{ .Values.frontEnd.image.tag }}"
+          resources:
+            {{- toYaml .Values.frontEnd.resources | nindent 10 }}
+          ports:
+            - containerPort: {{ .Values.frontEnd.service.targetPort }}
+          env:
+            - name: SESSION_REDIS
+              value: {{ .Values.frontEnd.env.sessionRedis | quote }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - all
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.frontEnd.probe.liveness.path }}
+              port: {{ .Values.frontEnd.service.targetPort }}
+            initialDelaySeconds: {{ .Values.frontEnd.probe.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.frontEnd.probe.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.frontEnd.probe.readiness.path }}
+              port: {{ .Values.frontEnd.service.targetPort }}
+            initialDelaySeconds: {{ .Values.frontEnd.probe.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.frontEnd.probe.readiness.periodSeconds }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

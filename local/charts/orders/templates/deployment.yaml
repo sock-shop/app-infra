@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.orders.name }}
+  labels:
+    name: {{ .Values.orders.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.orders.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.orders.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.orders.name }}
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for MongoDB to be ready..."
+              until nc -z -v -w30 {{ .Values.orders.name }}-db 27017; do
+                echo "MongoDB not available yet, sleeping..."
+                sleep 5
+              done
+              echo "MongoDB is available!"
+      containers:
+        - name: {{ .Values.orders.name }}
+          image: "{{ .Values.orders.image.repository }}:{{ .Values.orders.image.tag }}"
+          env:
+            - name: JAVA_OPTS
+              value: {{ .Values.orders.env.javaOpts }}
+          resources:
+            {{- toYaml .Values.orders.resources | nindent 10 }}
+          ports:
+            - containerPort: {{ .Values.orders.service.targetPort }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

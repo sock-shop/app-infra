@@ -1,0 +1,17 @@
+catalogueDb:
+  name: catalogue-db
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/catalogue-db
+    tag: 0.3.0
+  env:
+    mysqlRootPassword: fake_password
+    mysqlDatabase: socksdb
+  service:
+    port: 3306
+    targetPort: 3306
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+

@@ -1,0 +1,266 @@
+carts:
+  name: carts
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/carts
+    tag: 0.4.8
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+  env:
+    javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
+  service:
+    port: 80
+    targetPort: 80
+
+cartsDb:
+  name: carts-db
+  replicaCount: 1
+  image:
+    repository: mongo
+    tag: "3.4"
+  service:
+    port: 27017
+    targetPort: 27017
+
+catalogue:
+  name: catalogue
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/catalogue
+    tag: 0.3.5
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  service:
+    port: 80
+    targetPort: 80
+  probe:
+    liveness:
+      path: /health
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      path: /health
+      initialDelaySeconds: 180
+      periodSeconds: 3
+
+catalogueDb:
+  name: catalogue-db
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/catalogue-db
+    tag: 0.3.0
+  env:
+    mysqlRootPassword: fake_password
+    mysqlDatabase: socksdb
+  service:
+    port: 3306
+    targetPort: 3306
+
+frontEnd:
+  name: front-end
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/front-end
+    tag: 0.3.12
+  resources:
+    limits:
+      cpu: 300m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  service:
+    port: 80
+    targetPort: 8079
+  probe:
+    liveness:
+      path: /
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      path: /
+      initialDelaySeconds: 30
+      periodSeconds: 3
+  env:
+    sessionRedis: "true"
+
+ingress:
+  enabled: true
+  clusterIssuer: http-01-production
+#  className: external-nginx
+  className: nginx
+#  host: prod.sock-shop.cloudns.be
+  host: sock-shop.localdev.me
+
+orders:
+  name: orders
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/orders
+    tag: 0.4.7
+  resources:
+    limits:
+      cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  env:
+    javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
+  service:
+    port: 80
+    targetPort: 80
+
+ordersDb:
+  name: orders-db
+  replicaCount: 1
+  image:
+    repository: mongo
+    tag: "3.4"
+  service:
+    port: 27017
+    targetPort: 27017
+
+payment:
+  name: payment
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/payment
+    tag: 0.4.3
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 99m
+      memory: 100Mi
+  service:
+    port: 80
+    targetPort: 80
+  probe:
+    path: /health
+    liveness:
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      initialDelaySeconds: 180
+      periodSeconds: 3
+
+queueMaster:
+  name: queue-master
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/queue-master
+    tag: 0.3.1
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  service:
+    port: 80
+    targetPort: 80
+  env:
+    javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
+
+rabbitmq:
+  name: rabbitmq
+  replicaCount: 1
+  image:
+    repository: rabbitmq
+    tag: 3.6.8-management
+  ports:
+    management: 15672
+    rabbitmq: 5672
+  exporter:
+    image:
+      repository: kbudde/rabbitmq-exporter
+      tag: latest
+    port: 9090
+  service:
+    ports:
+      rabbitmq: 5672
+      exporter: 9090
+
+sessionDb:
+  name: session-db
+  replicaCount: 1
+  image:
+    repository: redis
+    tag: alpine
+  service:
+    port: 6379
+    targetPort: 6379
+
+shipping:
+  name: shipping
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/shipping
+    tag: 0.4.8
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  service:
+    port: 80
+    targetPort: 80
+  env:
+    zipkin: zipkin.jaeger.svc.cluster.local
+    javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
+
+
+user:
+  name: user
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/user
+    tag: 0.4.7
+  resources:
+    limits:
+      cpu: 300m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  service:
+    port: 80
+    targetPort: 80
+  env:
+    mongo: user-db:27017
+  probe:
+    path: /health
+    liveness:
+      initialDelaySeconds: 300
+      periodSeconds: 3
+    readiness:
+      initialDelaySeconds: 180
+      periodSeconds: 3
+
+userDb:
+  name: user-db
+  replicaCount: 1
+  image:
+    repository: weaveworksdemos/user-db
+    tag: 0.3.0
+  service:
+    port: 27017
+    targetPort: 27017
+
+nodeSelector:
+  kubernetes.io/os: linux

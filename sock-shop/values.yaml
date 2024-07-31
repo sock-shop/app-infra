@@ -1,6 +1,3 @@
-# values.yaml
-namespace: production
-
 carts:
   name: carts
   replicaCount: 1
@@ -99,8 +96,9 @@ frontEnd:
 
 ingress:
   enabled: true
-  className: nginx
-  host: sock-shop.localdev.me
+  clusterIssuer: http-01-production
+  className: external-nginx
+  host: prod.sock-shop.cloudns.be
 
 orders:
   name: orders

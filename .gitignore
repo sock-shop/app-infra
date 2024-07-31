@@ -43,3 +43,4 @@ terraform.rc
 tasks.xml
 workspace.xml
 .terraform
+_templates

@@ -22,8 +22,14 @@ variable "values_path" {
   default     = "sock-shop/values-stage.yaml"
 }
 
-variable "deployment_namespace" {
+variable "env" {
   type        = string
   description = "the namespace to use to deploy the helm-charts"
   default     = "stage"
+}
+
+variable "user_email" {
+  type        = string
+  description = "todo"
+  default     = "alex.nguepi@web.de"
 }

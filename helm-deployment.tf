@@ -1,8 +1,8 @@
-resource "helm_release" "microservices-app-master" {
+resource "helm_release" "sock-shop" {
   name             = "microservices-app-master-release"
-  chart            = "helm-charts"
+  chart     = "sock-shop"
   create_namespace = true
-  namespace        = var.deployment_namespace
+  namespace = var.env
 
   values = [
     file(var.values_path)
@@ -12,5 +12,5 @@ resource "helm_release" "microservices-app-master" {
   #   name  = "cluster.enabled"
   #    value = "true"
   #  }
-
+  depends_on = [kubernetes_manifest.cluster_issuer]
 }

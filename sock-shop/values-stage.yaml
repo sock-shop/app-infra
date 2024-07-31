@@ -1,6 +1,3 @@
-# values.yaml
-namespace: stage
-
 carts:
   name: carts
   replicaCount: 1
@@ -99,8 +96,9 @@ frontEnd:
 
 ingress:
   enabled: true
-  className: nginx
-  host: stage.sock-shop.localdev.me
+  clusterIssuer: http-01-stage
+  className: external-nginx
+  host: stage.sock-shop.cloudns.be
 
 orders:
   name: orders

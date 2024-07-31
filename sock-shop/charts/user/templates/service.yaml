@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.user.name }}
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: {{ .Values.user.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - port: {{ .Values.user.service.port }}
+      targetPort: {{ .Values.user.service.targetPort }}
+  selector:
+    name: {{ .Values.user.name }}
