@@ -6,6 +6,15 @@ data "aws_ecr_repository" "service_front_end" {
   name = "front-end"
 }
 
+
+output "service_catalogue_tags" {
+  value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags
+}
+
+output "service_front_end_tags" {
+  value = data.aws_ecr_repository.service_front_end.most_recent_image_tags
+}
+
 resource "helm_release" "sock-shop" {
   name             = "microservices-app-master-release"
   chart            = "sock-shop"
@@ -24,7 +33,7 @@ resource "helm_release" "sock-shop" {
 
   set {
     name  = "frontEnd.image.tag"
-    value = data.aws_ecr_repository.service_front_end.tags[0]
+    value = data.aws_ecr_repository.service_front_end.most_recent_image_tags[0]
   }
 
   set {
@@ -34,6 +43,6 @@ resource "helm_release" "sock-shop" {
 
   set {
     name  = "catalogue.image.tag"
-    value = data.aws_ecr_repository.service_catalogue.tags[0]
+    value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags[0]
   }
 }
