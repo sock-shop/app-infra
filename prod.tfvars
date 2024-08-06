@@ -1,2 +1,2 @@
-values_path = "sock-shop/values.yaml"
-env         = "production"
+values_yaml_path = "sock-shop/values.yaml"
+env              = "production"
