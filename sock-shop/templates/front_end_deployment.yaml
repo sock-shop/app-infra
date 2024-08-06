@@ -79,41 +79,5 @@ spec:
                 sleep 10
               done
               echo "orders service is available!"
-        - name: wait-for-payment
-          image: busybox
-          command:
-            - 'sh'
-            - '-c'
-            - |
-              echo "Waiting for payment service  to be ready..."
-              until nc -z -v -w30 {{ .Values.payment.name }} 80; do
-                echo "payment service not available yet, sleeping..."
-                sleep 10
-              done
-              echo "payment service  is available!"
-        - name: wait-for-shipping
-          image: busybox
-          command:
-            - 'sh'
-            - '-c'
-            - |
-              echo "Waiting for shipping service to be ready..."
-              until nc -z -v -w30 {{ .Values.shipping.name }} 80; do
-                echo "shipping service not available yet, sleeping..."
-                sleep 10
-              done
-              echo "shipping service is available!"
-        - name: wait-for-user
-          image: busybox
-          command:
-            - 'sh'
-            - '-c'
-            - |
-              echo "Waiting for user service to be ready..."
-              until nc -z -v -w30 {{ .Values.user.name }} 80; do
-                echo "user service not available yet, sleeping..."
-                sleep 10
-              done
-              echo "user service is available!"
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
