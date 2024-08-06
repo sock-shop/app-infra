@@ -19,7 +19,7 @@ spec:
         - name: {{ .Values.user.name }}
           image: "{{ .Values.user.image.repository }}:{{ .Values.user.image.tag }}"
           resources:
-            {{- toYaml .Values.user.resources | nindent 10 }}
+            {{- toYaml .Values.user.resources | nindent 8 }}
           ports:
             - containerPort: {{ .Values.user.service.targetPort }}
           env:

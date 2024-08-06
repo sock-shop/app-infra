@@ -19,7 +19,7 @@ spec:
         - name: {{ .Values.payment.name }}
           image: "{{ .Values.payment.image.repository }}:{{ .Values.payment.image.tag }}"
           resources:
-            {{- toYaml .Values.payment.resources | nindent 10 }}
+            {{- toYaml .Values.payment.resources | nindent 8 }}
           ports:
             - containerPort: {{ .Values.payment.service.targetPort }}
           securityContext:

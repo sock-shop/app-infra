@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
         - name: wait-for-db
-          image: busybox:latest
+          image: busybox
           command: ['sh', '-c', 'until nc -z -v -w30 {{ .Values.catalogue.name }}-db 3306; do sleep 1; done']
       containers:
         - name: {{ .Values.catalogue.name }}
@@ -26,7 +26,7 @@ spec:
           args:
             - -port={{ .Values.catalogue.service.targetPort }}
           resources:
-            {{- toYaml .Values.catalogue.resources | nindent 10 }}
+            {{- toYaml .Values.catalogue.resources | nindent 8 }}
           ports:
             - containerPort: {{ .Values.catalogue.service.targetPort }}
           securityContext:
