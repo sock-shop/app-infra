@@ -15,19 +15,19 @@ spec:
       labels:
         name: {{ .Values.carts.name }}
     spec:
-      initContainers:
-        - name: wait-for-db
-          image: busybox
-          command:
-          - 'sh'
-          - '-c'
-          - |
-            echo "Waiting for MongoDB to be ready..."
-            until nc -z -v -w30 {{ .Values.carts.name }}-db 27017; do
-              echo "MongoDB not available yet, sleeping..."
-              sleep 5
-            done
-            echo "MongoDB is available!"
+{{/*      initContainers:*/}}
+{{/*        - name: wait-for-db*/}}
+{{/*          image: busybox*/}}
+{{/*          command:*/}}
+{{/*          - 'sh'*/}}
+{{/*          - '-c'*/}}
+{{/*          - |*/}}
+{{/*            echo "Waiting for MongoDB to be ready..."*/}}
+{{/*            until nc -z -v -w30 {{ .Values.carts.name }}-db 27017; do*/}}
+{{/*              echo "MongoDB not available yet, sleeping..."*/}}
+{{/*              sleep 5*/}}
+{{/*            done*/}}
+{{/*            echo "MongoDB is available!"*/}}
       containers:
         - name: {{ .Values.carts.name }}
           image: "{{ .Values.carts.image.repository }}:{{ .Values.carts.image.tag }}"
