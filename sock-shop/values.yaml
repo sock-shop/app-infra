@@ -99,6 +99,18 @@ ingress:
   clusterIssuer: http-01-production
   className: external-nginx
   host: prod.sock-shop.cloudns.be
+  secretName: prod-sock-shop-cloudns-be
+
+ClusterIssuer:
+  name: http-01-production
+  acme:
+    email: alex@jmetio.de
+  privateKeySecretRef:
+    name: http-01-production-cluster-issuer
+  solvers:
+    - http01:
+        ingress:
+          ingressClassName: external-nginx
 
 orders:
   name: orders
