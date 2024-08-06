@@ -6,39 +6,39 @@ data "aws_ecr_repository" "service_front_end" {
   name = "front-end"
 }
 
-resource "helm_release" "sock-shop" {
-  name             = "sock-shop-release"
-  chart            = "sock-shop"
-  create_namespace = true
-  namespace        = var.env
-  atomic           = true
-  force_update     = true
-  cleanup_on_fail  = true
-#   wait             = true
-
-  values = [
-    file(var.values_yaml_path)
-  ]
-
-  set {
-    name  = "catalogue.image.repository"
-    value = data.aws_ecr_repository.service_catalogue.repository_url
-  }
-
-  set {
-    name  = "catalogue.image.tag"
-    value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags[0]
-  }
-
-  set {
-    name  = "frontEnd.image.repository"
-    value = data.aws_ecr_repository.service_front_end.repository_url
-  }
-
-  set {
-    name  = "frontEnd.image.tag"
-    value = data.aws_ecr_repository.service_front_end.most_recent_image_tags[0]
-  }
-
-  depends_on = [helm_release.cert-manager]
-}
+# resource "helm_release" "sock-shop" {
+#   name             = "sock-shop-release"
+#   chart            = "sock-shop"
+#   create_namespace = true
+#   namespace        = var.env
+#   atomic           = true
+#   force_update     = true
+#   cleanup_on_fail  = true
+# #   wait             = true
+#
+#   values = [
+#     file(var.values_yaml_path)
+#   ]
+#
+#   set {
+#     name  = "catalogue.image.repository"
+#     value = data.aws_ecr_repository.service_catalogue.repository_url
+#   }
+#
+#   set {
+#     name  = "catalogue.image.tag"
+#     value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags[0]
+#   }
+#
+#   set {
+#     name  = "frontEnd.image.repository"
+#     value = data.aws_ecr_repository.service_front_end.repository_url
+#   }
+#
+#   set {
+#     name  = "frontEnd.image.tag"
+#     value = data.aws_ecr_repository.service_front_end.most_recent_image_tags[0]
+#   }
+#
+#   depends_on = [helm_release.cert-manager]
+# }
