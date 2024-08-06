@@ -1,7 +1,7 @@
 resource "kubernetes_manifest" "cluster_issuer" {
   manifest = {
     "apiVersion" = "cert-manager.io/v1"
-    "kind"       = "ClusterIssuer"
+    "kind"       = "Issuer"
     "metadata" = {
       "name" = "http-01-${var.env}"
     }
@@ -26,5 +26,5 @@ resource "kubernetes_manifest" "cluster_issuer" {
     }
   }
 
-  depends_on = [helm_release.external-nginx]
+  depends_on = [helm_release.cert-manager]
 }
