@@ -22,7 +22,7 @@ spec:
             - name: JAVA_OPTS
               value: {{ .Values.queueMaster.env.javaOpts }}
           resources:
-            {{- toYaml .Values.queueMaster.resources | nindent 8 }}
+            {{- toYaml .Values.queueMaster.resources | nindent 12 }}
           ports:
             - containerPort: {{ .Values.queueMaster.service.targetPort }}
       nodeSelector:

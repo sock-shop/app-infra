@@ -22,7 +22,7 @@ spec:
             - name: JAVA_OPTS
               value: {{ .Values.orders.env.javaOpts }}
           resources:
-            {{- toYaml .Values.orders.resources | nindent 8 }}
+            {{- toYaml .Values.orders.resources | nindent 12 }}
           ports:
             - containerPort: {{ .Values.orders.service.targetPort }}
           securityContext:

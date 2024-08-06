@@ -24,7 +24,7 @@ spec:
             - name: JAVA_OPTS
               value: {{ .Values.shipping.env.javaOpts }}
           resources:
-            {{- toYaml .Values.shipping.resources | nindent 8 }}
+            {{- toYaml .Values.shipping.resources | nindent 12 }}
           ports:
             - containerPort: {{ .Values.shipping.service.targetPort }}
           securityContext:
