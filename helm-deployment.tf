@@ -27,23 +27,23 @@ resource "helm_release" "sock-shop" {
     file(var.values_yaml_path)
   ]
 
-  set {
-    name  = "frontEnd.image.repository"
-    value = data.aws_ecr_repository.service_front_end.repository_url
-  }
-
-  set {
-    name  = "frontEnd.image.tag"
-    value = data.aws_ecr_repository.service_front_end.most_recent_image_tags[0]
-  }
-
-  set {
-    name  = "catalogue.image.repository"
-    value = data.aws_ecr_repository.service_catalogue.repository_url
-  }
-
-  set {
-    name  = "catalogue.image.tag"
-    value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags[0]
-  }
+#   set {
+#     name  = "catalogue.image.repository"
+#     value = data.aws_ecr_repository.service_catalogue.repository_url
+#   }
+#
+#   set {
+#     name  = "catalogue.image.tag"
+#     value = data.aws_ecr_repository.service_catalogue.most_recent_image_tags[0]
+#   }
+#
+#   set {
+#     name  = "frontEnd.image.repository"
+#     value = data.aws_ecr_repository.service_front_end.repository_url
+#   }
+#
+#   set {
+#     name  = "frontEnd.image.tag"
+#     value = data.aws_ecr_repository.service_front_end.most_recent_image_tags[0]
+#   }
 }
