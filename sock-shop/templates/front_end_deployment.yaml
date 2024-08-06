@@ -44,7 +44,7 @@ spec:
             periodSeconds: {{ .Values.frontEnd.probe.readiness.periodSeconds }}
       initContainers:
         - name: wait-for-carts
-          image: busybox
+          image: busybox:latest
           command:
             - 'sh'
             - '-c'
@@ -56,7 +56,7 @@ spec:
               done
               echo "carts service is available!"
         - name: wait-for-catalogue
-          image: busybox
+          image: busybox:latest
           command:
             - 'sh'
             - '-c'
@@ -68,7 +68,7 @@ spec:
               done
               echo "catalogue service is available!"
         - name: wait-for-orders
-          image: busybox
+          image: busybox:latest
           command:
             - 'sh'
             - '-c'
