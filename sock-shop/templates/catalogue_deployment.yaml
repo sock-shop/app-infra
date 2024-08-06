@@ -22,9 +22,9 @@ spec:
       containers:
         - name: {{ .Values.catalogue.name }}
           image: "{{ .Values.catalogue.image.repository }}:{{ .Values.catalogue.image.tag }}"
-          command: ["/app"]
-          args:
-            - -port={{ .Values.catalogue.service.targetPort }}
+{{/*          command: ["/app"]*/}}
+{{/*          args:*/}}
+{{/*            - -port={{ .Values.catalogue.service.targetPort }}*/}}
           resources:
             {{- toYaml .Values.catalogue.resources | nindent 10 }}
           ports:
