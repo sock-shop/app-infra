@@ -56,6 +56,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Workspace
+        run: terraform workspace select stage
+
       - name: Terraform Plan
         id: plan
         run: |
@@ -76,8 +79,10 @@ jobs:
 
       - name: Cleaning Up Residual Resources
         if: success() && github.event.inputs.action  == 'destroy'
+        # TODO: ameliorate this
         run: |
-          terraform plan -destroy -target=kubernetes_service_account.service-account -target=module.lb_role -out=remaining_plan.out | tee cleanup_plan.log
+          terraform plan -destroy -target=kubernetes_service_account.service-account -target=module.lb_role -out=remaining_plan.out | tee cleanup_plan.log 
+          
 
       - name: Apply Cleanup Plan
         if: success() && github.event.inputs.action == 'destroy' && github.event.inputs.confirm == 'yes'
