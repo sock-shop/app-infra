@@ -11,8 +11,10 @@ resource "helm_release" "sock-shop" {
   chart            = "sock-shop"
   create_namespace = true
   namespace        = var.env
-  wait             = true
+  atomic           = true
   force_update     = true
+  cleanup_on_fail  = true
+#   wait             = true
 
   values = [
     file(var.values_yaml_path)
