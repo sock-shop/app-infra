@@ -39,7 +39,7 @@ spec:
               name: tmp-volume
       initContainers:
         - name: wait-for-db
-          image: busybox
+          image: busybox:latest
           command:
             - 'sh'
             - '-c'
@@ -47,7 +47,7 @@ spec:
               echo "Waiting for MongoDB to be ready..."
               until nc -z -v -w30 {{ .Values.orders.name }}-db 27017; do
                 echo "MongoDB not available yet, sleeping..."
-                sleep 5
+                sleep 1
               done
               echo "MongoDB is available!"
       volumes:

@@ -15,19 +15,6 @@ spec:
       labels:
         name: {{ .Values.user.name }}
     spec:
-      initContainers:
-        - name: wait-for-db
-          image: busybox
-          command:
-            - 'sh'
-            - '-c'
-            - |
-              echo "Waiting for MongoDB to be ready..."
-              until nc -z -v -w30 {{ .Values.user.name }}-db 27017; do
-                echo "MongoDB not available yet, sleeping..."
-                sleep 5
-              done
-              echo "MongoDB is available!"
       containers:
         - name: {{ .Values.user.name }}
           image: "{{ .Values.user.image.repository }}:{{ .Values.user.image.tag }}"

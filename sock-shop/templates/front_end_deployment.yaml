@@ -52,7 +52,7 @@ spec:
               echo "Waiting for carts service to be ready..."
               until nc -z -v -w30 {{ .Values.carts.name }} 80; do
                 echo "carts service not available yet, sleeping..."
-                sleep 10
+                sleep 5
               done
               echo "carts service is available!"
         - name: wait-for-catalogue
@@ -64,7 +64,7 @@ spec:
               echo "Waiting for catalogue service to be ready..."
               until nc -z -v -w30 {{ .Values.catalogue.name }} 80; do
                 echo "catalogue service not available yet, sleeping..."
-                sleep 10
+                sleep 5
               done
               echo "catalogue service is available!"
         - name: wait-for-orders
@@ -76,7 +76,7 @@ spec:
               echo "Waiting for orders service to be ready..."
               until nc -z -v -w30 {{ .Values.orders.name }} 80; do
                 echo "orders service not available yet, sleeping..."
-                sleep 10
+                sleep 5
               done
               echo "orders service is available!"
       nodeSelector:
