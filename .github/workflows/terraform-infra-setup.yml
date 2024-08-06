@@ -110,6 +110,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         with:
-          exec: helm upgrade sock-shop ./sock-shop/ --install --create-namespace  --wait --atomic --namespace=stage --values=./sock-shop/values-stage.yaml --set catalogue.image.repository=${REGISTRY}/catalogue --set catalogue.image.tag=v0.1.2 --set frontEnd.image.repository=${REGISTRY}/front-end --set frontEnd.image.tag=v0.1.2
+          exec: helm upgrade sock-shop ./sock-shop/ --install --create-namespace  --wait --namespace=stage --values=./sock-shop/values-stage.yaml --set catalogue.image.repository=${REGISTRY}/catalogue --set catalogue.image.tag=v0.1.2 --set frontEnd.image.repository=${REGISTRY}/front-end --set frontEnd.image.tag=v0.1.2
+#          exec: helm upgrade sock-shop ./sock-shop/ --install --create-namespace  --wait --atomic --namespace=stage --values=./sock-shop/values-stage.yaml --set catalogue.image.repository=${REGISTRY}/catalogue --set catalogue.image.tag=v0.1.2 --set frontEnd.image.repository=${REGISTRY}/front-end --set frontEnd.image.tag=v0.1.2
           kubeconfig: '${{ secrets.KUBECONFIG }}'
           overrule_existing_kubeconfig: "true"
