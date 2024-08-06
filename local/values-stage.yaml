@@ -31,8 +31,8 @@ catalogue:
   name: catalogue
   replicaCount: 1
   image:
-    repository: weaveworksdemos/catalogue
-    tag: 0.3.5
+    repository: f3lin/catalogue
+    tag: latest
   resources:
     limits:
       cpu: 200m
@@ -70,8 +70,8 @@ frontEnd:
   name: front-end
   replicaCount: 1
   image:
-    repository: weaveworksdemos/front-end
-    tag: 0.3.12
+    repository: f3lin/front-end
+    tag: latest
   resources:
     limits:
       cpu: 300m

@@ -15,19 +15,6 @@ spec:
       labels:
         name: {{ .Values.orders.name }}
     spec:
-{{/*      initContainers:*/}}
-{{/*        - name: wait-for-db*/}}
-{{/*          image: busybox*/}}
-{{/*          command:*/}}
-{{/*            - 'sh'*/}}
-{{/*            - '-c'*/}}
-{{/*            - |*/}}
-{{/*              echo "Waiting for MongoDB to be ready..."*/}}
-{{/*              until nc -z -v -w30 {{ .Values.orders.name }}-db 27017; do*/}}
-{{/*                echo "MongoDB not available yet, sleeping..."*/}}
-{{/*                sleep 5*/}}
-{{/*              done*/}}
-{{/*              echo "MongoDB is available!"*/}}
       containers:
         - name: {{ .Values.orders.name }}
           image: "{{ .Values.orders.image.repository }}:{{ .Values.orders.image.tag }}"
@@ -50,6 +37,19 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              echo "Waiting for MongoDB to be ready..."
+              until nc -z -v -w30 {{ .Values.orders.name }}-db 27017; do
+                echo "MongoDB not available yet, sleeping..."
+                sleep 5
+              done
+              echo "MongoDB is available!"
       volumes:
         - name: tmp-volume
           emptyDir:
