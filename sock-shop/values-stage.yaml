@@ -96,7 +96,7 @@ frontEnd:
 
 ingress:
   enabled: true
-  clusterIssuer: http-01-stage
+  clusterIssuer: http-01-app
   className: external-nginx
   host: app.sock-shop.cloudns.be
   secretName: app-sock-shop-cloudns-be
