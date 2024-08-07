@@ -18,7 +18,7 @@ spec:
       initContainers:
         - name: wait-for-db
           image: busybox
-          command: ['sh', '-c', 'until nc -z -v -w30 {{ .Values.catalogue.name }}-db 3306; do sleep 1; done']
+          command: ['sh', '-c', 'until nc -z -v -w30 {{ .Values.catalogue.name }}-db 3306; do sleep 5; done']
       containers:
         - name: {{ .Values.catalogue.name }}
           image: "{{ .Values.catalogue.image.repository }}:{{ .Values.catalogue.image.tag }}"

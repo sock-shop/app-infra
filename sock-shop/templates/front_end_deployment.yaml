@@ -30,12 +30,6 @@ spec:
               drop:
                 - all
             readOnlyRootFilesystem: true
-          startupProbe:
-            httpGet:
-              path: {{ .Values.frontEnd.probe.liveness.path }}
-              port: {{ .Values.frontEnd.service.targetPort }}
-            failureThreshold: 30
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: {{ .Values.frontEnd.probe.liveness.path }}
