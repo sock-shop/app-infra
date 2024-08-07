@@ -24,7 +24,7 @@ resource "kubernetes_manifest" "cluster_issuer" {
     }
     spec = {
       acme = {
-        email = "alex@jmetio.de"
+        email  = "alex@jmetio.de"
         server = "https://acme-v02.api.letsencrypt.org/directory"
         privateKeySecretRef = {
           name = "http-01-${var.env}-cluster-issuer"
