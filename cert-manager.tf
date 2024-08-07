@@ -16,31 +16,11 @@ resource "helm_release" "cert-manager" {
 }
 
 resource "kubernetes_manifest" "cluster_issuer" {
-  manifest = yamlencode({
-    apiVersion = "cert-manager.io/v1"
-    kind       = "ClusterIssuer"
-    metadata = {
-      name = "http-01-${var.env}"
-    }
-    spec = {
-      acme = {
-        email  = "alex@jmetio.de"
-        server = "https://acme-v02.api.letsencrypt.org/directory"
-        privateKeySecretRef = {
-          name = "http-01-${var.env}-cluster-issuer"
-        }
-        solvers = [
-          {
-            http01 = {
-              ingress = {
-                ingressClassName = "external-nginx"
-              }
-            }
-          }
-        ]
-      }
-    }
-  })
-
+  manifest = yamldecode(templatefile("${path.module}/cluster_issuer.tpl", {
+    env                   = var.env,
+    email                 = "alex@jmetio.de",
+    private_key_secret    = "http-01-${var.env}-cluster-issuer",
+    ingress_class_name    = "external-nginx"
+  }))
   depends_on = [helm_release.cert-manager]
 }
