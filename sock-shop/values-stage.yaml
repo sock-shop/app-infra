@@ -101,17 +101,6 @@ ingress:
   host: stage.sock-shop.cloudns.be
   secretName: stage-sock-shop-cloudns-be
 
-ClusterIssuer:
-  name: http-01-stage
-  acme:
-    email: alex@jmetio.de
-  privateKeySecretRef:
-    name: http-01-stage-cluster-issuer
-  solvers:
-    - http01:
-        ingress:
-          ingressClassName: external-nginx
-
 orders:
   name: orders
   replicaCount: 1
