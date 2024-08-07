@@ -56,7 +56,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -input=false -detailed-exitcode -no-color -out=plan.out -var-file="stage.tfvars"
+        run: terraform plan -no-color -out=plan.out -var-file="stage.tfvars"
         continue-on-error: true
 
       - name: Capture Plan Output
