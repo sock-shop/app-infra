@@ -12,6 +12,6 @@ resource "helm_release" "sock-shop" {
   depends_on = [
     helm_release.external-nginx,
     helm_release.cert-manager,
-    kubernetes_manifest.cluster_issuer
+#     kubernetes_manifest.cluster_issuer
   ]
 }
