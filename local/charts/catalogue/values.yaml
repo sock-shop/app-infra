@@ -2,8 +2,8 @@ catalogue:
   name: catalogue
   replicaCount: 1
   image:
-    repository: f3lin/catalogue
-    tag: latest
+    repository: weaveworksdemos/catalogue
+    tag: 0.3.5
   resources:
     limits:
       cpu: 200m

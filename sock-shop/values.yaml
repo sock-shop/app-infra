@@ -7,10 +7,10 @@ carts:
   resources:
     limits:
       cpu: 300m
-      memory: 500Mi
+      memory: 2000Mi
     requests:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 300m
+      memory: 2000Mi
   env:
     javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
   service:
@@ -22,7 +22,7 @@ cartsDb:
   replicaCount: 1
   image:
     repository: mongo
-    tag: "3.4"
+    tag: 4.4.0
   service:
     port: 27017
     targetPort: 27017
@@ -38,8 +38,8 @@ catalogue:
       cpu: 200m
       memory: 200Mi
     requests:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 200m
+      memory: 200Mi
   service:
     port: 80
     targetPort: 80
@@ -104,7 +104,7 @@ ingress:
 ClusterIssuer:
   name: http-01-production
   acme:
-    email: alex@jmetio.de
+    email: alex.edu237@gmail.com
   privateKeySecretRef:
     name: http-01-production-cluster-issuer
   solvers:
@@ -121,10 +121,10 @@ orders:
   resources:
     limits:
       cpu: 500m
-      memory: 500Mi
+      memory: 2000Mi
     requests:
-      cpu: 100m
-      memory: 300Mi
+      cpu: 200m
+      memory: 2000Mi
   env:
     javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
   service:
@@ -136,7 +136,7 @@ ordersDb:
   replicaCount: 1
   image:
     repository: mongo
-    tag: "3.4"
+    tag: 4.4.0
   service:
     port: 27017
     targetPort: 27017
@@ -149,10 +149,10 @@ payment:
     tag: 0.4.3
   resources:
     limits:
-      cpu: 200m
-      memory: 200Mi
+      cpu: 100m
+      memory: 100Mi
     requests:
-      cpu: 99m
+      cpu: 100m
       memory: 100Mi
   service:
     port: 80
@@ -175,10 +175,10 @@ queueMaster:
   resources:
     limits:
       cpu: 300m
-      memory: 500Mi
+      memory: 1000Mi
     requests:
-      cpu: 100m
-      memory: 300Mi
+      cpu: 300m
+      memory: 1000Mi
   service:
     port: 80
     targetPort: 80
@@ -223,10 +223,10 @@ shipping:
   resources:
     limits:
       cpu: 300m
-      memory: 500Mi
+      memory: 2000Mi
     requests:
-      cpu: 100m
-      memory: 300Mi
+      cpu: 300m
+      memory: 2000Mi
   service:
     port: 80
     targetPort: 80
@@ -244,10 +244,10 @@ user:
   resources:
     limits:
       cpu: 300m
-      memory: 200Mi
+      memory: 1000Mi
     requests:
       cpu: 100m
-      memory: 100Mi
+      memory: 400Mi
   service:
     port: 80
     targetPort: 80
