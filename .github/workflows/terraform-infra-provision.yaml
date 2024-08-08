@@ -87,8 +87,7 @@ jobs:
           if [ "${{ github.event.inputs.action }}" == "apply" ]; then
             terraform plan -no-color -out=plan.out -detailed-exitcode -var-file="${{ github.event.inputs.namespace }}.tfvars" | tee terraform_plan.log
           else
-            terraform plan -destroy -out=plan.out -var-file="${{ github.event.inputs.namespace }}.tfvars | tee terraform_plan.log
-          fi
+            terraform plan -destroy -out=plan.out -var-file="${{ github.event.inputs.namespace }}.tfvars" | tee terraform_plan.log
         continue-on-error: true
 
       - name: Display Terraform Plan Log
@@ -97,20 +96,20 @@ jobs:
 
       - name: Apply Terraform Configuration
         if: ${{ github.event.inputs.confirm == 'yes' && github.event.inputs.action == 'apply' }}
-        run: terraform apply --auto-approve -var-file="${{ github.event.inputs.namespace }}.tfvars plan.out
+        run: terraform apply --auto-approve plan.out
 
       - name: Destroy Terraform Configuration
         if: ${{ github.event.inputs.confirm == 'yes' && github.event.inputs.action == 'destroy' }}
-        run: terraform destroy --auto-approve -var-file="${{ github.event.inputs.namespace }}.tfvars
+        run: terraform destroy --auto-approve -var-file="${{ github.event.inputs.namespace }}.tfvars"
 
       - name: Cleaning Up Residual Resources
-        if: success() && github.event.inputs.action  == 'destroy'
+        if: success() && github.event.inputs.action == 'destroy'
         run: |
-          terraform plan -destroy -out=remaining_plan.out -var-file="${{ github.event.inputs.namespace }}.tfvars | tee cleanup_plan.log 
+          terraform plan -destroy -out=remaining_plan.out -var-file="${{ github.event.inputs.namespace }}.tfvars" | tee cleanup_plan.log
 
       - name: Apply Cleanup Plan
         if: success() && github.event.inputs.action == 'destroy' && github.event.inputs.confirm == 'yes'
-        run: terraform apply --auto-approve -var-file="${{ github.event.inputs.namespace }}.tfvars remaining_plan.out
+        run: terraform apply --auto-approve remaining_plan.out
 
       - name: Display Terraform Cleanup Plan Log
         if: failure()
