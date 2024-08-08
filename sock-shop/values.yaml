@@ -7,10 +7,10 @@ carts:
   resources:
     limits:
       cpu: 300m
-      memory: 2000Mi
+      memory: 1000Mi
     requests:
       cpu: 300m
-      memory: 2000Mi
+      memory: 1000Mi
   env:
     javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
   service:
@@ -121,10 +121,10 @@ orders:
   resources:
     limits:
       cpu: 500m
-      memory: 2000Mi
+      memory: 1000Mi
     requests:
       cpu: 200m
-      memory: 2000Mi
+      memory: 1000Mi
   env:
     javaOpts: "-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false"
   service:
@@ -223,10 +223,10 @@ shipping:
   resources:
     limits:
       cpu: 300m
-      memory: 2000Mi
+      memory: 1000Mi
     requests:
       cpu: 300m
-      memory: 2000Mi
+      memory: 1000Mi
   service:
     port: 80
     targetPort: 80
