@@ -23,6 +23,7 @@ on:
         description: 'The EKS namespace where you want to deploy/remove resources'
         required: true
         default: 'stage'
+        type: choice
         options:
           - stage
           - prod
