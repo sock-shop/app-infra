@@ -22,49 +22,12 @@ spec:
             - |
               echo "Waiting for dependent services to be ready..."
 
-              # Wait for carts service
-              until nc -z -v -w10 {{ .Values.carts.name }} 80; do
-                echo "carts service not available yet, sleeping..."
-                sleep 3
-              done
-              echo "carts service is available!"
-
               # Wait for catalogue service
               until nc -z -v -w10 {{ .Values.catalogue.name }} 80; do
                 echo "catalogue service not available yet, sleeping..."
                 sleep 5
               done
               echo "catalogue service is available!"
-
-              # Wait for orders service
-              until nc -z -v -w10 {{ .Values.orders.name }} 80; do
-                echo "orders service not available yet, sleeping..."
-                sleep 5
-              done
-              echo "orders service is available!"
-
-              # Wait for payment service
-              until nc -z -v -w10 {{ .Values.payment.name }} 80; do
-                echo "payment service not available yet, sleeping..."
-                sleep 5
-              done
-              echo "payment service is available!"
-
-              # Wait for shipping service
-              until nc -z -v -w10 {{ .Values.shipping.name }} 80; do
-                echo "shipping service not available yet, sleeping..."
-                sleep 5
-              done
-              echo "shipping service is available!"
-
-              # Wait for user service
-              until nc -z -v -w10 {{ .Values.user.name }} 80; do
-                echo "user service not available yet, sleeping..."
-                sleep 5
-              done
-              echo "user service is available!"
-
-              echo "All dependent services are ready!"
       containers:
         - name: {{ .Values.frontEnd.name }}
           image: "{{ .Values.frontEnd.image.repository }}:{{ .Values.frontEnd.image.tag }}"
