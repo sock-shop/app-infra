@@ -1,3 +1,40 @@
+{{/*---*/}}
+{{/*{{- if .Values.ingress.enabled }}*/}}
+{{/*apiVersion: networking.k8s.io/v1*/}}
+{{/*kind: Ingress*/}}
+{{/*metadata:*/}}
+{{/*  name: {{ .Values.frontEnd.name }}-ingress*/}}
+{{/*  namespace: {{ .Release.Namespace }}*/}}
+{{/*  annotations:*/}}
+{{/*    kubernetes.io/ingress.class: {{ .Values.ingress.className }}*/}}
+{{/*    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}*/}}
+{{/*    nginx.ingress.kubernetes.io/ssl-redirect: "true"*/}}
+{{/*    nginx.ingress.kubernetes.io/use-regex: "true"*/}}
+{{/*    nginx.ingress.kubernetes.io/rewrite-target: /$2*/}}
+{{/*    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"*/}}
+{{/*    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"*/}}
+{{/*    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"*/}}
+{{/*spec:*/}}
+{{/*  ingressClassName: {{ .Values.ingress.className }}*/}}
+{{/*  rules:*/}}
+{{/*    - host: {{ .Values.ingress.host }}*/}}
+{{/*      http:*/}}
+{{/*        paths:*/}}
+{{/*          - path: /(.*)*/}}
+{{/*            pathType: Prefix*/}}
+{{/*            backend:*/}}
+{{/*              service:*/}}
+{{/*                name: {{ .Values.frontEnd.name }}*/}}
+{{/*                port:*/}}
+{{/*                  number: {{ .Values.frontEnd.service.port }}*/}}
+{{/*  tls:*/}}
+{{/*    - hosts:*/}}
+{{/*        - {{ .Values.ingress.host }}*/}}
+{{/*      secretName: {{ .Values.ingress.secretName }}*/}}
+{{/*{{- end }}*/}}
+
+
+
 ---
 {{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
@@ -8,6 +45,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/rewrite-target: /
+
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:

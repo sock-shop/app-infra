@@ -95,6 +95,14 @@ frontEnd:
   env:
     sessionRedis: "true"
 
+#  resources:
+#    limits:
+#      cpu: 300m
+#      memory: 1000Mi
+#    requests:
+#      cpu: 100m
+#      memory: 300Mi
+
 ingress:
   enabled: true
   clusterIssuer: http-01-app
