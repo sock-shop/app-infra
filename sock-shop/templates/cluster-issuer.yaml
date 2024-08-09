@@ -6,8 +6,8 @@ metadata:
 spec:
   acme:
     email: {{ .Values.ClusterIssuer.acme.email }}
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-{{/*    server: https://acme-v02.api.letsencrypt.org/directory*/}}
+{{/*    server: https://acme-staging-v02.api.letsencrypt.org/directory*/}}
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: {{ .Values.ClusterIssuer.privateKeySecretRef.name }}
     solvers:
